@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  storage:
+    image: postgres:12
+    restart: unless-stopped
+    volumes:
+      - $DATA/storage:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+
+  graphql-engine:
+    image: $IMAGE
+    restart: unless-stopped
+    depends_on:
+      - storage
+    ports:
+      - $PORT_GRAPHQL_ENGINE:$PORT_GRAPHQL_ENGINE
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@storage:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: $ADMIN_SECRET
+      HASURA_GRAPHQL_ACCESS_KEY: $ADMIN_SECRET
+      HASURA_GRAPHQL_CONNECTION_COMPRESSION: "true"
+      HASURA_GRAPHQL_SERVER_PORT: $PORT_GRAPHQL_ENGINE
+
+ 

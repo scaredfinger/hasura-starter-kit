@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+
+  storage:
+
+  graphql-engine:
+
+  console-api:
+    build: ./console/server
+    depends_on:
+      - graphql-engine
+    ports:
+      - $PORT_CONSOLE_API:$PORT_CONSOLE_API
+    volumes:
+      - ./:/project
+    command: 
+      - hasura 
+      - console
+      - --admin-secret
+      - '$ADMIN_SECRET'
+      - --address
+      - '0.0.0.0'
+      - --project 
+      - /project/src
+      - --endpoint 
+      - http://graphql-engine:$PORT_GRAPHQL_ENGINE
+      - --api-port
+      - $PORT_CONSOLE_API
+      - --no-browser
+
+  console:
+    build: 
+      context: ./console/client
+      args:
+        VERSION: $VERSION
+    depends_on:
+      - console-api
+    ports:
+      - 3000:3000
+      - 3001:3001
+    command: npm run dev
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      API_HOST: http://localhost
+      API_PORT: $PORT_CONSOLE_API
+      CDN_ASSETS: 'false'
+      ENABLE_TELEMETRY: 'false'
+      URL_PREFIX: /
+      DATA_API_URL: http://localhost:$PORT_GRAPHQL_ENGINE
+      SERVER_VERSION: $VERSION
+      CONSOLE_MODE: cli
+      ADMIN_SECRET: $ADMIN_SECRET
+
+  project-initializer:
+    build: ./console/server
+    depends_on:
+      - graphql-engine
+    volumes:
+      - ./:/project
+    command: 
+      - hasura 
+      - init 
+      - /project/src
