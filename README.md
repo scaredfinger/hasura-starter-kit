@@ -22,3 +22,8 @@ PORT_CONSOLE_API=48082
 ```
 
 3. Enjoy
+
+## Pitfalls
+
+Make sure `src` folder does not exist the first time you plan to execute. The project
+initializer needs to create it from scratch.
