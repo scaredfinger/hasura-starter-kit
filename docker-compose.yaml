@@ -4,6 +4,7 @@ services:
 
   storage:
     image: postgres:12
+    user: $LOCAL_USER
     restart: unless-stopped
     volumes:
       - $DATA/storage:/var/lib/postgresql/data
@@ -12,6 +13,7 @@ services:
 
   graphql-engine:
     image: $IMAGE
+    user: $LOCAL_USER
     restart: unless-stopped
     depends_on:
       - storage
@@ -27,5 +29,6 @@ services:
       HASURA_GRAPHQL_ACCESS_KEY: $ADMIN_SECRET
       HASURA_GRAPHQL_CONNECTION_COMPRESSION: "true"
       HASURA_GRAPHQL_SERVER_PORT: $PORT_GRAPHQL_ENGINE
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "user"
 
  
