@@ -62,3 +62,10 @@ services:
     volumes:
       - ./:/project
     command: bash -c "hasura init /project/src && chown -R $LOCAL_USER /project/src"
+  
+
+  permissions-fixer:
+    image: alpine
+    volumes:
+      - ./:/project
+    command: chown -R $LOCAL_USER /project
