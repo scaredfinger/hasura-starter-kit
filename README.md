@@ -13,6 +13,7 @@ IMAGE=hasura/graphql-engine:${VERSION}.cli-migrations-v3.debian
 PORT_GRAPHQL_ENGINE=48080
 PORT_CONSOLE=48081
 PORT_CONSOLE_API=48082
+PORT_STORAGE=5432
 ```
 
 2. Run

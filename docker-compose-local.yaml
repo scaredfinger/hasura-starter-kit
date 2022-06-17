@@ -3,6 +3,8 @@ version: '3.8'
 services:
 
   storage:
+    ports:
+      - $PORT_STORAGE:5432
 
   graphql-engine:
 
