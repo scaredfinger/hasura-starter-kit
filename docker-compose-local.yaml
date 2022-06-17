@@ -61,7 +61,4 @@ services:
       - graphql-engine
     volumes:
       - ./:/project
-    command: 
-      - hasura 
-      - init 
-      - /project/src
+    command: bash -c "hasura init /project/src && chown -R $LOCAL_USER /project/src"
