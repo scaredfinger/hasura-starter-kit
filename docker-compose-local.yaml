@@ -63,9 +63,19 @@ services:
       - ./:/project
     command: bash -c "hasura init /project/src && chown -R $LOCAL_USER /project/src"
   
-
   permissions-fixer:
     image: alpine
     volumes:
       - ./:/project
     command: chown -R $LOCAL_USER /project
+  
+  schema-exporter:
+    build: ./console/schema-exporter
+    user: $LOCAL_USER
+    depends_on: 
+      - graphql-engine
+    environment:
+      GRAPHQL_SCHEMA_HOST_AND_PORT: http://graphql-engine:$PORT_GRAPHQL_ENGINE
+      ADMIN_SECRET: $ADMIN_SECRET
+    volumes:
+      - $DATA/schema-export:/output
