@@ -1,5 +1,6 @@
 mkdir --parents data/storage
-chmod -R 777 data/storage
+mkdir --parents data/schema-export
+chmod -R 777 data
 
 export LOCAL_USER="$(id -u $USER):$(id -g $GROUP)"
 
