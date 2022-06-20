@@ -1,6 +1,5 @@
 FROM node:12
 
-
 WORKDIR /src
 RUN git clone https://github.com/hasura/graphql-engine.git
 WORKDIR /src/graphql-engine
