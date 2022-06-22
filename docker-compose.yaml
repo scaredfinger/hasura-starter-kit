@@ -13,12 +13,13 @@ services:
 
   graphql-engine:
     image: $IMAGE
-    user: $LOCAL_USER
     restart: unless-stopped
     depends_on:
       - storage
     ports:
       - $PORT_GRAPHQL_ENGINE:$PORT_GRAPHQL_ENGINE
+    volumes:
+      - ./:/project
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@storage:5432/postgres
       ## enable the console served by server
@@ -30,5 +31,7 @@ services:
       HASURA_GRAPHQL_CONNECTION_COMPRESSION: "true"
       HASURA_GRAPHQL_SERVER_PORT: $PORT_GRAPHQL_ENGINE
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "user"
+      HASURA_GRAPHQL_MIGRATIONS_DIR: /project/src/migrations
+      HASURA_GRAPHQL_METADATA_DIR: /project/src/metadata
 
  

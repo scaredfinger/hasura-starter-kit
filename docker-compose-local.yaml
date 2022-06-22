@@ -10,6 +10,7 @@ services:
 
   console-api:
     build: ./console/server
+    restart: unless-stopped
     depends_on:
       - graphql-engine
     ports:
@@ -36,6 +37,7 @@ services:
       context: ./console/client
       args:
         VERSION: $VERSION
+    restart: unless-stopped
     depends_on:
       - console-api
     ports:
